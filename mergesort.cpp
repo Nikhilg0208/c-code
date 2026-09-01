@@ -61,10 +61,11 @@ public:
 
 int main()
 {
-    vector<int> adj = {4, 5, 6, 4, 3, 3, 4, 5, 6, 7};
+    vector<int> adj = {100, 5, 6, 4, 3, 3, 4, 5, 6, 7};
     Mergesort obj;
     obj.sort(adj);
     for (auto val : adj)
         cout << val << " ";
+    cout << endl;
     return 0;
 }
