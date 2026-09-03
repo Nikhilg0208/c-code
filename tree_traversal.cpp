@@ -72,6 +72,69 @@ public:
 
   vector<int> morrisPostorder(TreeNode *root) {
     vector<int> ans;
+
+    TreeNode dummy(0);
+    dummy.left = root;
+
+    TreeNode *cur = &dummy;
+
+    while (cur != NULL) {
+      if (cur->left == NULL) {
+        cur = cur->right;
+      } else {
+        TreeNode *prev = cur->left;
+
+        while (prev->right && prev->right != cur) {
+          prev = prev->right;
+        }
+
+        if (prev->right == NULL) {
+          prev->right = cur;
+          cur = cur->left;
+        } else {
+          // Reverse path from cur->left to prev
+          TreeNode *first = cur->left;
+          TreeNode *second = prev;
+
+          TreeNode *p = first;
+          TreeNode *q = first->right;
+
+          while (p != second) {
+            TreeNode *temp = q->right;
+            q->right = p;
+            p = q;
+            q = temp;
+          }
+
+          // Add nodes in reversed order
+          TreeNode *node = second;
+
+          while (true) {
+            ans.push_back(node->val);
+
+            if (node == first)
+              break;
+
+            node = node->right;
+          }
+
+          // Restore the reversed path
+          p = second;
+          q = second->right;
+
+          while (p != first) {
+            TreeNode *temp = q->right;
+            q->right = p;
+            p = q;
+            q = temp;
+          }
+
+          prev->right = NULL;
+          cur = cur->right;
+        }
+      }
+    }
+
     return ans;
   }
 
