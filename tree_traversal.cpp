@@ -232,6 +232,60 @@ public:
     return ans;
   }
 
+  // ---------- Vertical Traversal ----------
+
+  vector<vector<int>> verticalTraversal(TreeNode *root) {
+    vector<vector<int>> ans;
+
+    map<int, map<int, multiset<int>>> nodes;
+
+    queue<pair<TreeNode *, pair<int, int>>> q;
+
+    q.push({root, {0, 0}});
+
+    while (!q.empty()) {
+      auto it = q.front();
+      q.pop();
+
+      TreeNode *node = it.first;
+      int row = it.second.first;
+      int col = it.second.second;
+
+      nodes[col][row].insert(node->val);
+
+      if (node->left) {
+        q.push({node->left, {row + 1, col - 1}});
+      }
+
+      if (node->right) {
+        q.push({node->right, {row + 1, col + 1}});
+      }
+    }
+
+    for (auto &col : nodes) {
+      vector<int> vertical;
+
+      for (auto &row : col.second) {
+        for (int value : row.second) {
+          vertical.push_back(value);
+        }
+      }
+
+      ans.push_back(vertical);
+    }
+
+    return ans;
+  }
+
+  vector<vector<int>> allTraversals(TreeNode *root) {
+    vector<int> preorder;
+    vector<int> inorder;
+    vector<int> postorder;
+    
+
+    return {preorder, inorder, postorder};
+  }
+
 private:
   void inorderHelper(TreeNode *root, vector<int> &ans) {
     if (!root)
@@ -325,7 +379,51 @@ int main() {
   cout << "Morris Postorder : ";
   for (int x : ans)
     cout << x << " ";
+  cout << endl << endl;
+
+  vector<vector<int>> answer = obj.verticalTraversal(root);
+
+  cout << "Your Answer     : ";
+
+  for (auto &col : answer) {
+    cout << "[ ";
+
+    for (int x : col)
+      cout << x << " ";
+
+    cout << "] ";
+  }
+
   cout << endl;
+
+  cout << "Expected Answer : ";
+  cout << "[ 9 ] [ 2 11 ] [ 1 10 ] [ 8 ] [ 12 ]";
+
+  cout << endl << endl;
+
+  vector<vector<int>> traversals = obj.allTraversals(root);
+
+  cout << "\nAll Traversals in One Traversal:" << endl;
+
+  cout << "Preorder  : ";
+  for (int x : traversals[0])
+    cout << x << " ";
+  cout << endl;
+
+  cout << "Inorder   : ";
+  for (int x : traversals[1])
+    cout << x << " ";
+  cout << endl;
+
+  cout << "Postorder : ";
+  for (int x : traversals[2])
+    cout << x << " ";
+  cout << endl;
+
+  cout << "\nExpected:" << endl;
+  cout << "Preorder  : 1 2 9 10 11 8 12" << endl;
+  cout << "Inorder   : 9 2 11 10 1 8 12" << endl;
+  cout << "Postorder : 9 11 10 2 12 8 1" << endl;
 
   return 0;
 }
