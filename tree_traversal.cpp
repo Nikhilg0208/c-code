@@ -1,38 +1,50 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-class TreeNode {
+class TreeNode
+{
 public:
   int val;
   TreeNode *left, *right;
 
-  TreeNode(int x) {
+  TreeNode(int x)
+  {
     val = x;
     left = right = nullptr;
   }
 };
 
-class Solution {
+class Solution
+{
 public:
   // ---------- Morris ----------
 
-  vector<int> morrisInorder(TreeNode *root) {
+  vector<int> morrisInorder(TreeNode *root)
+  {
     vector<int> ans;
     TreeNode *cur = root;
 
-    while (cur != NULL) {
-      if (cur->left == NULL) {
+    while (cur != NULL)
+    {
+      if (cur->left == NULL)
+      {
         ans.push_back(cur->val);
         cur = cur->right;
-      } else {
+      }
+      else
+      {
         TreeNode *prev = cur->left;
-        while (prev->right && prev->right != cur) {
+        while (prev->right && prev->right != cur)
+        {
           prev = prev->right;
         }
-        if (prev->right == NULL) {
+        if (prev->right == NULL)
+        {
           prev->right = cur;
           cur = cur->left;
-        } else {
+        }
+        else
+        {
           prev->right = NULL;
           ans.push_back(cur->val);
           cur = cur->right;
@@ -42,26 +54,36 @@ public:
     return ans;
   }
 
-  vector<int> morrisPreorder(TreeNode *root) {
+  vector<int> morrisPreorder(TreeNode *root)
+  {
     vector<int> ans;
     TreeNode *cur = root;
 
-    while (cur != NULL) {
-      if (cur->left == NULL) {
+    while (cur != NULL)
+    {
+      if (cur->left == NULL)
+      {
         ans.push_back(cur->val);
         cur = cur->right;
-      } else {
+      }
+      else
+      {
         TreeNode *prev = cur->left;
-        while (prev->right && prev->right != cur) {
+        while (prev->right && prev->right != cur)
+        {
           prev = prev->right;
         }
-        if (prev->right != cur) {
+        if (prev->right != cur)
+        {
           ans.push_back(cur->val);
         }
-        if (prev->right == NULL) {
+        if (prev->right == NULL)
+        {
           prev->right = cur;
           cur = cur->left;
-        } else {
+        }
+        else
+        {
           prev->right = NULL;
           cur = cur->right;
         }
@@ -70,7 +92,8 @@ public:
     return ans;
   }
 
-  vector<int> morrisPostorder(TreeNode *root) {
+  vector<int> morrisPostorder(TreeNode *root)
+  {
     vector<int> ans;
 
     TreeNode dummy(0);
@@ -78,20 +101,28 @@ public:
 
     TreeNode *cur = &dummy;
 
-    while (cur != NULL) {
-      if (cur->left == NULL) {
+    while (cur != NULL)
+    {
+      if (cur->left == NULL)
+      {
         cur = cur->right;
-      } else {
+      }
+      else
+      {
         TreeNode *prev = cur->left;
 
-        while (prev->right && prev->right != cur) {
+        while (prev->right && prev->right != cur)
+        {
           prev = prev->right;
         }
 
-        if (prev->right == NULL) {
+        if (prev->right == NULL)
+        {
           prev->right = cur;
           cur = cur->left;
-        } else {
+        }
+        else
+        {
           // Reverse path from cur->left to prev
           TreeNode *first = cur->left;
           TreeNode *second = prev;
@@ -99,7 +130,8 @@ public:
           TreeNode *p = first;
           TreeNode *q = first->right;
 
-          while (p != second) {
+          while (p != second)
+          {
             TreeNode *temp = q->right;
             q->right = p;
             p = q;
@@ -109,7 +141,8 @@ public:
           // Add nodes in reversed order
           TreeNode *node = second;
 
-          while (true) {
+          while (true)
+          {
             ans.push_back(node->val);
 
             if (node == first)
@@ -122,7 +155,8 @@ public:
           p = second;
           q = second->right;
 
-          while (p != first) {
+          while (p != first)
+          {
             TreeNode *temp = q->right;
             q->right = p;
             p = q;
@@ -140,19 +174,22 @@ public:
 
   // ---------- Recursive ----------
 
-  vector<int> inorderTraversal(TreeNode *root) {
+  vector<int> inorderTraversal(TreeNode *root)
+  {
     vector<int> ans;
     inorderHelper(root, ans);
     return ans;
   }
 
-  vector<int> preorderTraversal(TreeNode *root) {
+  vector<int> preorderTraversal(TreeNode *root)
+  {
     vector<int> ans;
     preorderHelper(root, ans);
     return ans;
   }
 
-  vector<int> postorderTraversal(TreeNode *root) {
+  vector<int> postorderTraversal(TreeNode *root)
+  {
     vector<int> ans;
     postorderHelper(root, ans);
     return ans;
@@ -160,13 +197,16 @@ public:
 
   // ---------- Iterative ----------
 
-  vector<int> inorderIterative(TreeNode *root) {
+  vector<int> inorderIterative(TreeNode *root)
+  {
     vector<int> ans;
     stack<TreeNode *> st;
     TreeNode *curr = root;
 
-    while (curr != nullptr || !st.empty()) {
-      while (curr != nullptr) {
+    while (curr != nullptr || !st.empty())
+    {
+      while (curr != nullptr)
+      {
         st.push(curr);
         curr = curr->left;
       }
@@ -181,7 +221,8 @@ public:
     return ans;
   }
 
-  vector<int> preorderIterative(TreeNode *root) {
+  vector<int> preorderIterative(TreeNode *root)
+  {
     vector<int> ans;
     if (!root)
       return ans;
@@ -189,7 +230,8 @@ public:
     stack<TreeNode *> st;
     st.push(root);
 
-    while (!st.empty()) {
+    while (!st.empty())
+    {
       TreeNode *node = st.top();
       st.pop();
 
@@ -204,7 +246,8 @@ public:
     return ans;
   }
 
-  vector<int> postorderIterative(TreeNode *root) {
+  vector<int> postorderIterative(TreeNode *root)
+  {
     vector<int> ans;
     if (!root)
       return ans;
@@ -212,7 +255,8 @@ public:
     stack<TreeNode *> st1, st2;
     st1.push(root);
 
-    while (!st1.empty()) {
+    while (!st1.empty())
+    {
       TreeNode *node = st1.top();
       st1.pop();
 
@@ -224,7 +268,8 @@ public:
         st1.push(node->right);
     }
 
-    while (!st2.empty()) {
+    while (!st2.empty())
+    {
       ans.push_back(st2.top()->val);
       st2.pop();
     }
@@ -234,7 +279,8 @@ public:
 
   // ---------- Vertical Traversal ----------
 
-  vector<vector<int>> verticalTraversal(TreeNode *root) {
+  vector<vector<int>> verticalTraversal(TreeNode *root)
+  {
     vector<vector<int>> ans;
 
     map<int, map<int, multiset<int>>> nodes;
@@ -243,7 +289,8 @@ public:
 
     q.push({root, {0, 0}});
 
-    while (!q.empty()) {
+    while (!q.empty())
+    {
       auto it = q.front();
       q.pop();
 
@@ -253,20 +300,25 @@ public:
 
       nodes[col][row].insert(node->val);
 
-      if (node->left) {
+      if (node->left)
+      {
         q.push({node->left, {row + 1, col - 1}});
       }
 
-      if (node->right) {
+      if (node->right)
+      {
         q.push({node->right, {row + 1, col + 1}});
       }
     }
 
-    for (auto &col : nodes) {
+    for (auto &col : nodes)
+    {
       vector<int> vertical;
 
-      for (auto &row : col.second) {
-        for (int value : row.second) {
+      for (auto &row : col.second)
+      {
+        for (int value : row.second)
+        {
           vertical.push_back(value);
         }
       }
@@ -277,17 +329,62 @@ public:
     return ans;
   }
 
-  vector<vector<int>> allTraversals(TreeNode *root) {
+  vector<vector<int>> allTraversals(TreeNode *root)
+  {
     vector<int> preorder;
     vector<int> inorder;
     vector<int> postorder;
-    
+    if (root == NULL)
+    {
+      return {};
+    }
 
-    return {preorder, inorder, postorder};
+    stack<pair<TreeNode *, int>> st;
+    st.push({root, 1});
+    while (!st.empty())
+    {
+      auto it = st.top();
+      st.pop();
+      if (it.second == 1)
+      {
+        preorder.push_back(it.first->val);
+        it.second = 2;
+        st.push(it);
+
+        if (it.first->left != NULL)
+        {
+          st.push({it.first->left, 1});
+        }
+      }
+
+      else if (it.second == 2)
+      {
+        inorder.push_back(it.first->val);
+        it.second = 3;
+        st.push(it);
+
+        if (it.first->right != NULL)
+        {
+          st.push({it.first->right, 1});
+        }
+      }
+
+      else
+      {
+        postorder.push_back(it.first->val);
+      }
+    }
+
+    vector<vector<int>> result;
+    result.push_back(preorder);
+    result.push_back(inorder);
+    result.push_back(postorder);
+    return result;
   }
 
 private:
-  void inorderHelper(TreeNode *root, vector<int> &ans) {
+  void inorderHelper(TreeNode *root, vector<int> &ans)
+  {
     if (!root)
       return;
     inorderHelper(root->left, ans);
@@ -295,7 +392,8 @@ private:
     inorderHelper(root->right, ans);
   }
 
-  void preorderHelper(TreeNode *root, vector<int> &ans) {
+  void preorderHelper(TreeNode *root, vector<int> &ans)
+  {
     if (!root)
       return;
     ans.push_back(root->val);
@@ -303,7 +401,8 @@ private:
     preorderHelper(root->right, ans);
   }
 
-  void postorderHelper(TreeNode *root, vector<int> &ans) {
+  void postorderHelper(TreeNode *root, vector<int> &ans)
+  {
     if (!root)
       return;
     postorderHelper(root->left, ans);
@@ -312,7 +411,8 @@ private:
   }
 };
 
-int main() {
+int main()
+{
 
   TreeNode *root = new TreeNode(1);
   root->left = new TreeNode(2);
@@ -342,7 +442,8 @@ int main() {
   cout << "Recursive Postorder : ";
   for (int x : ans)
     cout << x << " ";
-  cout << endl << endl;
+  cout << endl
+       << endl;
 
   // Iterative
   ans = obj.inorderIterative(root);
@@ -361,7 +462,8 @@ int main() {
   cout << "Iterative Postorder : ";
   for (int x : ans)
     cout << x << " ";
-  cout << endl << endl;
+  cout << endl
+       << endl;
 
   ans = obj.morrisInorder(root);
   cout << "Morris Inorder : ";
@@ -379,13 +481,15 @@ int main() {
   cout << "Morris Postorder : ";
   for (int x : ans)
     cout << x << " ";
-  cout << endl << endl;
+  cout << endl
+       << endl;
 
   vector<vector<int>> answer = obj.verticalTraversal(root);
 
   cout << "Your Answer     : ";
 
-  for (auto &col : answer) {
+  for (auto &col : answer)
+  {
     cout << "[ ";
 
     for (int x : col)
@@ -399,7 +503,8 @@ int main() {
   cout << "Expected Answer : ";
   cout << "[ 9 ] [ 2 11 ] [ 1 10 ] [ 8 ] [ 12 ]";
 
-  cout << endl << endl;
+  cout << endl
+       << endl;
 
   vector<vector<int>> traversals = obj.allTraversals(root);
 
