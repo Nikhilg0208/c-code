@@ -3,5 +3,6 @@
     "iostream": "cpp",
     "ostream": "cpp",
     "*.tcc": "cpp"
-  }
+  },
+  "files.autoSave": "off"
 }
